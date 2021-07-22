@@ -1,0 +1,192 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "contract IAddressResolver",
+        "name": "addressResolver",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "fromAsset",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "toAsset",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "fromAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "receivedAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "Swapped",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "ADDRESS_RESOLVER",
+    "outputs": [
+      {
+        "internalType": "contract IAddressResolver",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_SLIPPAGE_PERCENT",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "currencyKey",
+        "type": "address"
+      }
+    ],
+    "name": "getPrice",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "numberOfTokens",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "currencyKeyIn",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "currencyKeyOut",
+        "type": "address"
+      }
+    ],
+    "name": "getAmountsOut",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "assetToSwapFrom",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "assetToSwapTo",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountToSwap",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minAmountOut",
+        "type": "uint256"
+      }
+    ],
+    "name": "swapFromPool",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "assetToSwapFrom",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "assetToSwapTo",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountToSwap",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minAmountOut",
+        "type": "uint256"
+      }
+    ],
+    "name": "swapFromBot",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

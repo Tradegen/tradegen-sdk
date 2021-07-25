@@ -161,13 +161,13 @@ export abstract class Fetcher {
   /**
    * Given an array of addresses, fetches the token data for each address
    * @param chainID chain
-   * @param provider the provider to use to fetch the data
    * @param addresses array of token addresses
+   * @param provider the provider to use to fetch the data
    */
    public static async fetchTokensFromAddresses(
     chainID: ChainId,
-    provider = getDefaultProvider(getNetwork(chainID)),
-    addresses: string[]
+    addresses: string[],
+    provider = getDefaultProvider(getNetwork(chainID))
   ): Promise<Token[]> {
     let tokens:Promise<Token>[] = new Array(addresses.length);
     for (var i = 0; i < addresses.length; i++)

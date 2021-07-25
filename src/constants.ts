@@ -15,6 +15,11 @@ export enum Rounding {
   ROUND_UP
 }
 
+// Alfajores addresses
+export const SETTINGS_ADDRESS_ALFAJORES = '0x4523A66e1a971A017E04B19B55Ac5e5A3E2d933A'
+export const POOL_PROXY_ADDRESS_ALFAJORES = '0x84019B1aDfeE5ec2338D68B3884a51EA86ce67D3'
+export const BASE_UBESWAP_ADAPTER_ADDRESS_ALFAJORES = '0x8221F08dc65048bd207B5B5cb61F1666434F9958'
+
 // exports for internal consumption
 export const ZERO = JSBI.BigInt(0)
 export const ONE = JSBI.BigInt(1)

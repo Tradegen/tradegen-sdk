@@ -6,7 +6,7 @@ import { validateAndParseAddress} from '../utils'
  */
 export class Pool {
   public readonly managerAddress?: string
-  public readonly performanceFee?: number
+  public readonly performanceFee: number
   public readonly name?: string
 
   public readonly chainId: ChainId
@@ -14,11 +14,11 @@ export class Pool {
 
   /**
    * Constructs an instance of the base class `Pool`.
-   * @param managerAddress address of the pool's manager
    * @param performanceFee the pool's performance fee
+   * @param managerAddress address of the pool's manager
    * @param name name of the pool
    */
-  public constructor(chainId: ChainId, address: string, managerAddress?: string, performanceFee?: number, name?: string) {
+  public constructor(chainId: ChainId, address: string, performanceFee: number, managerAddress?: string, name?: string) {
     this.managerAddress = managerAddress
     this.performanceFee = performanceFee
     this.name = name

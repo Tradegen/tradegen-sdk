@@ -4,8 +4,8 @@ import { getDefaultProvider } from '@ethersproject/providers'
 import ERC20 from './abis/ERC20.json'
 import AssetPool from './abis/Pool.json'
 import Settings from './abis/Settings.json'
-import PoolProxy from './abis/PoolProxy.json'
-import { ChainId, SETTINGS_ADDRESS_ALFAJORES, POOL_PROXY_ADDRESS_ALFAJORES } from './constants'
+import PoolFactory from './abis/PoolFactory.json'
+import { ChainId, SETTINGS_ADDRESS_ALFAJORES, POOL_FACTORY_ADDRESS_ALFAJORES } from './constants'
 import { Token } from './entities/token'
 import { Pool } from './entities/pool'
 
@@ -153,8 +153,8 @@ export abstract class Fetcher {
     chainID: ChainId,
     provider = getDefaultProvider(getNetwork(chainID))
   ): Promise<string[]> {
-    const poolProxyAddress = chainID == ChainId.ALFAJORES ? POOL_PROXY_ADDRESS_ALFAJORES : '0x0';
-    const availablePools = await new Contract(poolProxyAddress, PoolProxy, provider).getAvailablePools()
+    const poolProxyAddress = chainID == ChainId.ALFAJORES ? POOL_FACTORY_ADDRESS_ALFAJORES : '0x0';
+    const availablePools = await new Contract(poolProxyAddress, PoolFactory, provider).getAvailablePools()
     return availablePools
   }
 

@@ -1,4 +1,4 @@
-# Ubeswap SDK
+# Tradegen SDK
 
 In-depth documentation on this SDK is available at [tradegen.io](https://docs.tradegen.io/).
 

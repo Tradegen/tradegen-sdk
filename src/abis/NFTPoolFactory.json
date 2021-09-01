@@ -14,27 +14,21 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
-        "name": "fromAsset",
+        "name": "managerAddress",
         "type": "address"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
-        "name": "toAsset",
+        "name": "poolAddress",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "fromAmount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "receivedAmount",
+        "name": "poolIndex",
         "type": "uint256"
       },
       {
@@ -44,7 +38,7 @@
         "type": "uint256"
       }
     ],
-    "name": "Swapped",
+    "name": "CreatedNFTPool",
     "type": "event"
   },
   {
@@ -61,13 +55,55 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "addressToIndex",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "poolName",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "maxSupply",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "seedPrice",
+        "type": "uint256"
+      }
+    ],
+    "name": "createPool",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
-    "name": "MAX_SLIPPAGE_PERCENT",
+    "name": "getAvailablePools",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "address[]",
         "name": "",
-        "type": "uint256"
+        "type": "address[]"
       }
     ],
     "stateMutability": "view",
@@ -77,16 +113,16 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "currencyKey",
+        "name": "user",
         "type": "address"
       }
     ],
-    "name": "getPrice",
+    "name": "getUserManagedPools",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "address[]",
         "name": "",
-        "type": "uint256"
+        "type": "address[]"
       }
     ],
     "stateMutability": "view",
@@ -96,26 +132,16 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "numberOfTokens",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "currencyKeyIn",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "currencyKeyOut",
-        "type": "address"
-      }
-    ],
-    "name": "getAmountsOut",
-    "outputs": [
-      {
-        "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "name": "pools",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -125,26 +151,16 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "assetToSwapFrom",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "assetToSwapTo",
+        "name": "",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "amountToSwap",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "minAmountOut",
+        "name": "",
         "type": "uint256"
       }
     ],
-    "name": "swapFromPool",
+    "name": "userToManagedPools",
     "outputs": [
       {
         "internalType": "uint256",
@@ -152,41 +168,7 @@
         "type": "uint256"
       }
     ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "assetToSwapFrom",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "assetToSwapTo",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amountToSwap",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "minAmountOut",
-        "type": "uint256"
-      }
-    ],
-    "name": "swapFromBot",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   }
 ]

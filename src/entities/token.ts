@@ -62,7 +62,7 @@ export const cUSD = {
 }
 
 export const TGEN = {
-    [ChainId.ALFAJORES]: new Token(ChainId.ALFAJORES, '0xb79d64d9Acc251b04A3Ca9f811EFf49Bde52BbbC', 18, 'TGEN', 'Tradegen'),
+    [ChainId.ALFAJORES]: new Token(ChainId.ALFAJORES, '0x58aaFAe9790163Db1899d9be3C145230D0430F3A', 18, 'TGEN', 'Tradegen'),
 }
 
 export const POOF = {

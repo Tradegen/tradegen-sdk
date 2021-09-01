@@ -1,6 +1,6 @@
 import { Fraction } from '../src/entities/fraction/fraction'
 import JSBI from 'jsbi'
-
+/*
 describe.only('Fraction', () => {
   describe('#quotient', () => {
     it('floor division', () => {
@@ -118,4 +118,4 @@ describe.only('Fraction', () => {
       ).toEqual(new Fraction(JSBI.BigInt(60), JSBI.BigInt(48)))
     })
   })
-})
+})*/

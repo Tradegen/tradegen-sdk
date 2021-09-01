@@ -1,15 +1,12 @@
 import { newKit } from '@celo/contractkit'
 import { AbiItem } from 'web3-utils'
-import ERC20 from './abis/ERC20.json'
-import AssetPool from './abis/Pool.json'
 import Settings from './abis/Settings.json'
-import PoolFactory from './abis/PoolFactory.json'
-import { ChainId, SETTINGS_ADDRESS_ALFAJORES, POOL_FACTORY_ADDRESS_ALFAJORES } from './constants'
+import AssetHandler from './abis/AssetHandler.json'
 import { Token } from './entities/token'
-import { Pool } from './entities/pool'
+import ERC20 from './abis/ERC20.json'
+import { ChainId, SETTINGS_ADDRESS_ALFAJORES, ASSET_HANDLER_ADDRESS_ALFAJORES } from './constants'
 
 let TOKEN_DECIMALS_CACHE: { [chainId: number]: { [address: string]: number } } = {}
-let POOL_FEE_CACHE: { [chainId: number]: { [address: string]: number } } = {}
 
 /**
  * Contains methods for constructing instances of pools and tokens from on-chain data.
@@ -26,7 +23,7 @@ export abstract class Fetcher {
    * @param symbol optional symbol of the token
    * @param name optional name of the token
    */
-  public static async fetchTokenData(
+   public static async fetchTokenData(
     address: string,
     symbol?: string,
     name?: string
@@ -50,137 +47,54 @@ export abstract class Fetcher {
   }
 
   /**
-   * Fetch information for a given pool on the given chain, using the given ethers provider.
-   * @param address address of the pool on the chain
-   * @param managerAddress optional address of the pool's manager
-   * @param name optional name of the pool
+   * Given the name of a parameter, returns its value
+   * @param parameter Name of the parameter
    */
-   public static async fetchPoolData(
-    address: string,
-    managerAddress?: string,
-    name?: string
-  ): Promise<Pool> {
-    const kit = newKit('https://alfajores-forno.celo-testnet.org')
-    let instance = new kit.web3.eth.Contract(AssetPool as AbiItem[], address);
-    const parsedFee =
-      typeof POOL_FEE_CACHE?.[ChainId.ALFAJORES]?.[address] === 'number'
-        ? POOL_FEE_CACHE[ChainId.ALFAJORES][address]
-        : await instance.methods.getPerformanceFee().call().then((fee: number): number => {
-            POOL_FEE_CACHE = {
-              ...POOL_FEE_CACHE,
-              [ChainId.ALFAJORES]: {
-                ...POOL_FEE_CACHE?.[ChainId.ALFAJORES],
-                [address]: fee
-              }
-            }
-            return fee
-          })
-    return new Pool(ChainId.ALFAJORES, address, parsedFee, managerAddress, name)
-  }
-
-  /**
-   * Gets the pool's available funds in USD
-   * @param address the pool's address
-   */
-   public static async getPoolAvailableFunds(
-    address: string,
+   public static async getParameterValue(
+     parameter: string
   ): Promise<string> {
-    const kit = newKit('https://alfajores-forno.celo-testnet.org')
-    let instance = new kit.web3.eth.Contract(AssetPool as AbiItem[], address);
-    const balance = await instance.methods.getAvailableFunds().call()
-    return balance
-  }
-
-  /**
-   * Gets the user's balance in USD for the given pool
-   * @param address the pool's address
-   * @param user the address of user to get balance of
-   */
-   public static async getUserUSDBalance(
-    address: string,
-    user: string,
-  ): Promise<string> {
-    const kit = newKit('https://alfajores-forno.celo-testnet.org')
-    let instance = new kit.web3.eth.Contract(AssetPool as AbiItem[], address);
-    const balance = await instance.methods.getUSDBalance(user).call()
-    return balance
-  }
-
-  /**
-   * Gets the pool's positions and total balance
-   * @param address the pool's address
-   */
-   public static async getPoolPositionsAndTotal(
-    address: string,
-  ): Promise<[string[], string[], string]> {
-    const kit = newKit('https://alfajores-forno.celo-testnet.org')
-    let instance = new kit.web3.eth.Contract(AssetPool as AbiItem[], address);
-    const data = await instance.methods.getPositionsAndTotal().call()
-
-    return [data['0'], data['1'], data['2']]
-  }
-
-  /**
-   * Returns the currencies available on the platform
-   */
-   public static async getSupportedCurrencies(
-  ): Promise<string[]> {
     const kit = newKit('https://alfajores-forno.celo-testnet.org')
     let instance = new kit.web3.eth.Contract(Settings as AbiItem[], SETTINGS_ADDRESS_ALFAJORES)
-    const supportedCurrencies = await instance.methods.getAvailableCurrencies().call()
-    return supportedCurrencies
+    const value = await instance.methods.getParameterValue(parameter).call()
+    return value
   }
 
   /**
-   * Returns the address of each pool available
+   * Given the address of a token, returns whether the token is supported on Tradegen
+   * @param asset Address of the token
    */
-   public static async getAvailablePools(
-  ): Promise<string[]> {
-    const kit = newKit('https://alfajores-forno.celo-testnet.org')
-    let instance = new kit.web3.eth.Contract(PoolFactory as AbiItem[], POOL_FACTORY_ADDRESS_ALFAJORES)
-    const availablePools = await instance.methods.getAvailablePools().call()
-    return availablePools
-  }
+   public static async isValidAsset(
+    asset: string
+ ): Promise<boolean> {
+   const kit = newKit('https://alfajores-forno.celo-testnet.org')
+   let instance = new kit.web3.eth.Contract(AssetHandler as AbiItem[], ASSET_HANDLER_ADDRESS_ALFAJORES)
+   const valid = await instance.methods.isValidAsset(asset).call()
+   return valid
+ }
 
-  /**
-   * Given an array of addresses, fetches the token data for each address
-   * @param addresses array of token addresses
+ /**
+   * Given the address of a token, returns the token's price in USD
+   * @param asset Address of the token
    */
-   public static async fetchTokensFromAddresses(
-    addresses: string[],
-  ): Promise<Token[]> {
-    let tokens:Promise<Token>[] = new Array(addresses.length);
-    for (var i = 0; i < addresses.length; i++)
-    {
-        tokens[i] = this.fetchTokenData(addresses[i]);
-    }
-    
-    let output:Token[] = new Array(addresses.length)
-    await Promise.all(tokens).then((results:Token[]) => {
-        output = results
-    });
+  public static async getUSDPrice(
+    asset: string
+ ): Promise<string> {
+   const kit = newKit('https://alfajores-forno.celo-testnet.org')
+   let instance = new kit.web3.eth.Contract(AssetHandler as AbiItem[], ASSET_HANDLER_ADDRESS_ALFAJORES)
+   const price = await instance.methods.getUSDPrice(asset).call()
+   return price
+ }
 
-    return output
-  }
-
-  /**
-   * Given an array of addresses, fetches the pool data for each address
-   * @param addresses array of pool addresses
+ /**
+   * Given the address of a token, returns whether the token is supported on Tradegen
+   * @param asset Address of the token
    */
-   public static async fetchPoolsFromAddresses(
-    addresses: string[]
-  ): Promise<Pool[]> {
-    let pools:Promise<Pool>[] = new Array(addresses.length);
-    for (var i = 0; i < addresses.length; i++)
-    {
-        pools[i] = this.fetchPoolData(addresses[i]);
-    }
-    
-    let output:Pool[] = new Array(addresses.length)
-    await Promise.all(pools).then((results:Pool[]) => {
-        output = results
-    });
-
-    return output
-  }
+  public static async getAvailableAssetsForType(
+    assetType: number
+ ): Promise<string[]> {
+   const kit = newKit('https://alfajores-forno.celo-testnet.org')
+   let instance = new kit.web3.eth.Contract(AssetHandler as AbiItem[], ASSET_HANDLER_ADDRESS_ALFAJORES)
+   const assets = await instance.methods.getAvailableAssetsForType(assetType).call()
+   return assets
+ }
 }
